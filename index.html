@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCF Student Analytics Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Performance Analytics Console</h1>
+        <p>Parul University GCF JavaScript Assessment Engine</p>
+    </header>
+
+    <div class="grid">
+        <div class="card">
+            <h2>Record Processing</h2>
+            <hr style="margin-bottom:1.5rem; border:0; border-top:1px solid var(--border-color);">
+            
+            <form id="studentForm" novalidate>
+                <div class="form-group">
+                    <label for="studentName">Student Legal Name</label>
+                    <input type="text" id="studentName" placeholder="e.g., Rohan Khadke">
+                    <div class="error-msg" id="nameError">Name cannot be blank or purely numeric.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="subjectCategory">Assessment Stream</label>
+                    <select id="subjectCategory">
+                        <option value="CSE-101">Computer Science (CSE-101)</option>
+                        <option value="ECE-202">Electronics (ECE-202)</option>
+                        <option value="MATH-301">Advanced Mathematics (MATH-301)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="theoryScore">Theory Component (0-100)</label>
+                    <input type="number" id="theoryScore" placeholder="Enter score">
+                    <div class="error-msg" id="theoryError">Must be a real number between 0 and 100.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="practicalScore">Practical Component (0-100)</label>
+                    <input type="number" id="practicalScore" placeholder="Enter score">
+                    <div class="error-msg" id="practicalError">Must be a real number between 0 and 100.</div>
+                </div>
+
+                <button type="submit">Process and Evaluate Record</button>
+            </form>
+        </div>
+
+        <div>
+            <div class="card class-summary" style="margin-bottom: 2rem;">
+                <h2>System Core Telemetry</h2>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div>Total Records</div>
+                        <div id="totalStudents" class="metric-val">0</div>
+                    </div>
+                    <div class="metric-box">
+                        <div>Class Average</div>
+                        <div id="classAverage" class="metric-val">0.00</div>
+                    </div>
+                    <div class="metric-box">
+                        <div>Pass Rate</div>
+                        <div id="passRate" class="metric-val">0.0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Evaluated Ledger</h2>
+                <div style="overflow-x: auto;">
+                    <table id="analyticsTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Stream</th>
+                                <th>Theory</th>
+                                <th>Practical</th>
+                                <th>Aggregate</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledgerBody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
