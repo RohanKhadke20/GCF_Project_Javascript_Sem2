@@ -3,92 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GCF Student Analytics Platform</title>
+    <title>Enterprise Analytics Console | GCF Capstone</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>Performance Analytics Console</h1>
-        <p>Parul University GCF JavaScript Assessment Engine</p>
-    </header>
-
-    <div class="grid">
-        <div class="card">
-            <h2>Record Processing</h2>
-            <hr style="margin-bottom:1.5rem; border:0; border-top:1px solid var(--border-color);">
-            
-            <form id="studentForm" novalidate>
-                <div class="form-group">
-                    <label for="studentName">Student Legal Name</label>
-                    <input type="text" id="studentName" placeholder="e.g., Rohan Khadke">
-                    <div class="error-msg" id="nameError">Name cannot be blank or purely numeric.</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="subjectCategory">Assessment Stream</label>
-                    <select id="subjectCategory">
-                        <option value="CSE-101">Computer Science (CSE-101)</option>
-                        <option value="ECE-202">Electronics (ECE-202)</option>
-                        <option value="MATH-301">Advanced Mathematics (MATH-301)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="theoryScore">Theory Component (0-100)</label>
-                    <input type="number" id="theoryScore" placeholder="Enter score">
-                    <div class="error-msg" id="theoryError">Must be a real number between 0 and 100.</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="practicalScore">Practical Component (0-100)</label>
-                    <input type="number" id="practicalScore" placeholder="Enter score">
-                    <div class="error-msg" id="practicalError">Must be a real number between 0 and 100.</div>
-                </div>
-
-                <button type="submit">Process and Evaluate Record</button>
-            </form>
-        </div>
-
-        <div>
-            <div class="card class-summary" style="margin-bottom: 2rem;">
-                <h2>System Core Telemetry</h2>
-                <div class="metrics-grid">
-                    <div class="metric-box">
-                        <div>Total Records</div>
-                        <div id="totalStudents" class="metric-val">0</div>
-                    </div>
-                    <div class="metric-box">
-                        <div>Class Average</div>
-                        <div id="classAverage" class="metric-val">0.00</div>
-                    </div>
-                    <div class="metric-box">
-                        <div>Pass Rate</div>
-                        <div id="passRate" class="metric-val">0.0%</div>
-                    </div>
-                </div>
+<div class="app-wrapper">
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="brand-icon">Ω</span>
+            <div>
+                <span class="brand-title">AURA-ENG™ Analytics</span>
+                <span class="brand-subtitle">Parul University COE • GCF Platform</span>
             </div>
+        </div>
+        <div class="system-status">
+            <span class="pulse-indicator"></span>
+            <span id="runtimeClock">Engine: Ready</span>
+        </div>
+    </nav>
 
-            <div class="card">
-                <h2>Evaluated Ledger</h2>
-                <div style="overflow-x: auto;">
-                    <table id="analyticsTable">
+    <div class="dashboard-container">
+        <section class="telemetry-grid">
+            <div class="metric-card" data-trend="neutral">
+                <div class="card-header">
+                    <span class="card-label">Processed Registry</span>
+                    <span class="card-icon">📂</span>
+                </div>
+                <div class="card-value" id="totalRecords">0</div>
+                <div class="card-footer">Active memory entities</div>
+            </div>
+            <div class="metric-card" id="avgMetricCard">
+                <div class="card-header">
+                    <span class="card-label">Weighted Index Mean</span>
+                    <span class="card-icon">📈</span>
+                </div>
+                <div class="card-value" id="classAverage">0.00</div>
+                <div class="card-footer">System-wide performance average</div>
+            </div>
+            <div class="metric-card" id="passMetricCard">
+                <div class="card-header">
+                    <span class="card-label">Qualification Threshold</span>
+                    <span class="card-icon">🎯</span>
+                </div>
+                <div class="card-value" id="passRate">0.0%</div>
+                <div class="card-footer">Achieving aggregate ≥ 50.0%</div>
+            </div>
+        </section>
+
+        <div class="workspace-layout">
+            <aside class="control-panel card">
+                <div class="panel-header">
+                    <h3>Data Ingestion Pipeline</h3>
+                    <p>Enter atomic entry variables for validation and processing</p>
+                </div>
+                
+                <form id="ingestionForm" novalidate>
+                    <div class="form-group">
+                        <label for="studentName">Candidate Full Name</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="studentName" autocomplete="off" placeholder="e.g., Rohan Khadke">
+                            <span class="field-validation-icon"></span>
+                        </div>
+                        <div class="error-feedback" id="nameError">Requires standard non-numeric string characters</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subjectStream">Academic Domain Assignment</label>
+                        <select id="subjectStream">
+                            <option value="CSE-101">Computer Science & Engineering (CSE-101)</option>
+                            <option value="ECE-202">Electronics & Comm (ECE-202)</option>
+                            <option value="MATH-301">Discrete Mathematics (MATH-301)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="theoryScore">Theory Index (60% wt.)</label>
+                            <input type="number" id="theoryScore" min="0" max="100" step="0.1" placeholder="0.0">
+                            <div class="error-feedback" id="theoryError">Bounds: [0.0 - 100.0]</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="practicalScore">Practical Index (40% wt.)</label>
+                            <input type="number" id="practicalScore" min="0" max="100" step="0.1" placeholder="0.0">
+                            <div class="error-feedback" id="practicalError">Bounds: [0.0 - 100.0]</div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="primary-btn">
+                        <span class="btn-text">Compute & Commit Record</span>
+                        <span class="spinner hidden"></span>
+                    </button>
+                </form>
+            </aside>
+
+            <main class="data-workspace card">
+                <div class="workspace-header">
+                    <div class="header-titles">
+                        <h3>Analytics Ledger Ledger Workspace</h3>
+                        <p>Real-time conditional filtering and functional evaluation mutations</p>
+                    </div>
+                    <div class="control-hub">
+                        <div class="filter-tabs" id="filterTabs">
+                            <button class="tab active" data-filter="ALL">All Entries</button>
+                            <button class="tab" data-filter="PASSED">Passed</button>
+                            <button class="tab" data-filter="FAILED">Failed</button>
+                        </div>
+                        <button id="purgeRegistryBtn" class="danger-btn-outline">Flush Runtime State</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="ledgerTable">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Stream</th>
-                                <th>Theory</th>
-                                <th>Practical</th>
-                                <th>Aggregate</th>
-                                <th>Grade</th>
+                                <th class="sortable" data-sort="name">Candidate Identifier <span class="sort-icon">↕</span></th>
+                                <th class="sortable" data-sort="stream">Domain <span class="sort-icon">↕</span></th>
+                                <th class="sortable text-right" data-sort="theory">Theory</th>
+                                <th class="sortable text-right" data-sort="practical">Practical</th>
+                                <th class="sortable text-right" data-sort="aggregate">Weighted Aggregate <span class="sort-icon">↕</span></th>
+                                <th class="text-center">Evaluation Vector</th>
                             </tr>
                         </thead>
                         <tbody id="ledgerBody">
                             </tbody>
                     </table>
+                    <div id="emptyPlaceholder" class="empty-placeholder">
+                        <div class="empty-icon">📊</div>
+                        <h4>No Data Frames Present in Pipeline Memory</h4>
+                        <p>Submit valid telemetry candidate parameters using the console to construct operations.</p>
+                    </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
 </div>
